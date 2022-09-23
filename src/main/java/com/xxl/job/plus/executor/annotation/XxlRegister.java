@@ -15,5 +15,11 @@ public @interface XxlRegister {
 
     String author() default "default Author";
 
+    /*
+     * 默认为 ROUND 轮询方式
+     * 可选： FIRST 第一个
+     * */
+    String executorRouteStrategy() default "ROUND";
+
     int triggerStatus() default 0;
 }

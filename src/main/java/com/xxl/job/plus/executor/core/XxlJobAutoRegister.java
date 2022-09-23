@@ -112,7 +112,7 @@ public class XxlJobAutoRegister implements ApplicationListener<ApplicationReadyE
         xxlJobInfo.setScheduleConf(xxlRegister.cron());
         xxlJobInfo.setGlueType("BEAN");
         xxlJobInfo.setExecutorHandler(xxlJob.value());
-        xxlJobInfo.setExecutorRouteStrategy("FIRST");
+        xxlJobInfo.setExecutorRouteStrategy(xxlRegister.executorRouteStrategy());
         xxlJobInfo.setMisfireStrategy("DO_NOTHING");
         xxlJobInfo.setExecutorBlockStrategy("SERIAL_EXECUTION");
         xxlJobInfo.setExecutorTimeout(0);
