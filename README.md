@@ -46,3 +46,35 @@ xxl.job.admin.password=123456
 xxl.job.executor.title=Exe-Titl
 ```
 
+`XxlJobSpringExecutor`参数配置与之前相同
+
+## 4、添加注解
+需要自动注册的方法添加注解`@XxlRegister`，不加则不会自动注册
+
+```java
+@Service
+public class TestService {
+
+    @XxlJob(value = "testJob")
+    @XxlRegister(cron = "0 0 0 * * ? *",
+            author = "hydra",
+            jobDesc = "测试job")
+    public void testJob(){
+        System.out.println("#公众号：码农参上");
+    }
+
+
+    @XxlJob(value = "testJob222")
+    @XxlRegister(cron = "59 1-2 0 * * ?",
+            triggerStatus = 1)
+    public void testJob2(){
+        System.out.println("#作者：Hydra");
+    }
+
+    @XxlJob(value = "testJob444")
+    @XxlRegister(cron = "59 59 23 * * ?")
+    public void testJob4(){
+        System.out.println("hello xxl job");
+    }
+}
+```
