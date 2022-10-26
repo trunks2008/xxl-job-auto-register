@@ -37,13 +37,19 @@ xxl.job.executor.port=9999
 xxl.job.executor.logpath=/data/applogs/xxl-job/jobhandler
 xxl.job.executor.logretentiondays=30
 
-# 新增配置项
+# 新增配置项，必须项
 # admin用户名
-xxl.job.admin.username=admin 
+xxl.job.admin.username=admin
 # admin 密码
 xxl.job.admin.password=123456
 # 执行器名称
 xxl.job.executor.title=Exe-Titl
+
+# 新增配置项，可选项
+# 执行器地址类型：0=自动注册、1=手动录入，默认为0
+xxl.job.executor.addressType=1
+# 在上面为1的情况下，手动录入执行器地址列表，多地址逗号分隔
+xxl.job.executor.addressList=http://127.0.0.1:9999
 ```
 
 `XxlJobSpringExecutor`参数配置与之前相同
