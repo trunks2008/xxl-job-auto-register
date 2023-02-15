@@ -8,6 +8,7 @@ import com.xxl.job.plus.executor.model.XxlJobGroup;
 import com.xxl.job.plus.executor.model.XxlJobInfo;
 import com.xxl.job.plus.executor.service.JobGroupService;
 import com.xxl.job.plus.executor.service.JobInfoService;
+import com.xxl.job.plus.executor.service.impl.RegisterSwitch;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -42,6 +43,9 @@ public class XxlJobAutoRegister implements ApplicationListener<ApplicationReadyE
     @Autowired
     private JobInfoService jobInfoService;
 
+    @Autowired
+    private RegisterSwitch registerSwitch;
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext=applicationContext;
@@ -49,10 +53,12 @@ public class XxlJobAutoRegister implements ApplicationListener<ApplicationReadyE
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        //注册执行器
-        addJobGroup();
-        //注册任务
-        addJobInfo();
+        if (registerSwitch.isAutoRegisterOpen()) {
+            //注册执行器
+            addJobGroup();
+            //注册任务
+            addJobInfo();
+        }
     }
 
     //自动注册执行器
@@ -119,6 +125,7 @@ public class XxlJobAutoRegister implements ApplicationListener<ApplicationReadyE
         xxlJobInfo.setExecutorFailRetryCount(0);
         xxlJobInfo.setGlueRemark("GLUE代码初始化");
         xxlJobInfo.setTriggerStatus(xxlRegister.triggerStatus());
+        xxlJobInfo.setAlarmEmail(xxlRegister.alarmEmail());
 
         return xxlJobInfo;
     }

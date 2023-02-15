@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class JobInfoServiceImpl implements JobInfoService {
 
-    @Value("${xxl.job.admin.addresses}")
+    @Value("${xxl.job.admin.addresses:}")
     private String adminAddresses;
 
     @Autowired

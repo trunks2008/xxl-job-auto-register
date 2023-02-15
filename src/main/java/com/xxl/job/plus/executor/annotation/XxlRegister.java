@@ -13,6 +13,8 @@ public @interface XxlRegister {
 
     String jobDesc() default "default jobDesc";
 
+    String alarmEmail();
+
     String author() default "default Author";
 
     /*
