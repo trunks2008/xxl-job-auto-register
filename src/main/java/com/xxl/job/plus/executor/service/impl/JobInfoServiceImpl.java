@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,15 +28,15 @@ import java.util.stream.Collectors;
 @Service
 public class JobInfoServiceImpl implements JobInfoService {
 
-    @Value("${xxl.job.admin.addresses}")
+    @Value("${xxl.job.admin.addresses:}")
     private String adminAddresses;
 
     @Autowired
     private JobLoginService jobLoginService;
 
     @Override
-    public List<XxlJobInfo> getJobInfo(Integer jobGroupId,String executorHandler) {
-        String url=adminAddresses+"/jobinfo/pageList";
+    public List<XxlJobInfo> getJobInfo(Integer jobGroupId, String executorHandler) {
+        String url = adminAddresses + "/jobinfo/pageList";
         HttpResponse response = HttpRequest.post(url)
                 .form("jobGroup", jobGroupId)
                 .form("executorHandler", executorHandler)
@@ -54,7 +55,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 
     @Override
     public Integer addJobInfo(XxlJobInfo xxlJobInfo) {
-        String url=adminAddresses+"/jobinfo/add";
+        String url = adminAddresses + "/jobinfo/add";
         Map<String, Object> paramMap = BeanUtil.beanToMap(xxlJobInfo);
         HttpResponse response = HttpRequest.post(url)
                 .form(paramMap)
@@ -63,10 +64,46 @@ public class JobInfoServiceImpl implements JobInfoService {
 
         JSON json = JSONUtil.parse(response.body());
         Object code = json.getByPath("code");
-        if (code.equals(200)){
+        if (code.equals(200)) {
             return Convert.toInt(json.getByPath("content"));
         }
         throw new RuntimeException("add jobInfo error!");
     }
 
+    @Override
+    public void updateJobInfo(XxlJobInfo xxlJobInfo) {
+        String url = adminAddresses + "/jobinfo/update";
+        Map<String, Object> paramMap = BeanUtil.beanToMap(xxlJobInfo);
+        HttpResponse response = HttpRequest.post(url)
+                .form(paramMap)
+                .cookie(jobLoginService.getCookie())
+                .execute();
+
+        JSON json = JSONUtil.parse(response.body());
+        Object code = json.getByPath("code");
+        if (code.equals(200)) {
+            return;
+        }
+        throw new RuntimeException("update jobInfo error!");
+    }
+
+    @Override
+    public void saveJobCode(XxlJobInfo xxlJobInfo, String glueSource) {
+        String url = adminAddresses + "/jobcode/save";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("id", xxlJobInfo.getId());
+        paramMap.put("glueSource", glueSource);
+        paramMap.put("glueRemark", xxlJobInfo.getGlueRemark());
+        HttpResponse response = HttpRequest.post(url)
+                .form(paramMap)
+                .cookie(jobLoginService.getCookie())
+                .execute();
+
+        JSON json = JSONUtil.parse(response.body());
+        Object code = json.getByPath("code");
+        if (code.equals(200)) {
+            return;
+        }
+        throw new RuntimeException("update jobInfo error!");
+    }
 }

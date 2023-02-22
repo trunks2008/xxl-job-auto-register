@@ -20,13 +20,13 @@ import java.util.Optional;
 @Service
 public class JobLoginServiceImpl implements JobLoginService {
 
-    @Value("${xxl.job.admin.addresses}")
+    @Value("${xxl.job.admin.addresses:}")
     private String adminAddresses;
 
-    @Value("${xxl.job.admin.username}")
+    @Value("${xxl.job.admin.username:}")
     private String username;
 
-    @Value("${xxl.job.admin.password}")
+    @Value("${xxl.job.admin.password:}")
     private String password;
 
     private final Map<String,String> loginCookie=new HashMap<>();

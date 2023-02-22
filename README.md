@@ -38,6 +38,8 @@ xxl.job.executor.logpath=/data/applogs/xxl-job/jobhandler
 xxl.job.executor.logretentiondays=30
 
 # 新增配置项，必须项
+# 开关，默认为关闭CLOSE，仅当开关为OPEN时，开启自动注册
+xxl.job.auto.register=OPEN
 # admin用户名
 xxl.job.admin.username=admin
 # admin 密码
@@ -82,5 +84,36 @@ public class TestService {
     public void testJob4(){
         System.out.println("hello xxl job");
     }
+
+    @XxlJob(value = "testJob555")
+    @XxlRegister(cron = "0 0 1 * * ?",
+            author = "test_man",
+            glueType = "GLUE_SHELL",
+            glueSource = "#!/bin/bash\n" +
+                    "echo \"xxl-job: hello shell\"\n" +
+                    "\n" +
+                    "echo \"脚本位置：$0\"\n" +
+                    "echo \"任务参数：$1\"\n" +
+                    "echo \"分片序号 = $2\"\n" +
+                    "echo \"分片总数 = $3\"\n" +
+                    "\n" +
+                    "\n" +
+                    "echo \"Good bye!\"",
+            glueRemark = "test_man testJob555",
+            executorRouteStrategy = "ROUND",
+            jobDesc = "test_man 测试Job testJob555")
+    public void testJob5(){
+        System.out.println("hello xxl job");
+    }
+
+    @XxlJob(value = "testJob666")
+    @XxlRegister(cron = "0 0 1 * * ?",
+            glueType = "GLUE_SHELL",
+            glueSourceFilePath = "glue\\xxxx.sh",
+            glueRemark = "test_man testJob555")
+    public void testJob6(){
+        System.out.println("hello xxl job");
+    }
+    
 }
 ```

@@ -25,13 +25,13 @@ import java.util.stream.Collectors;
 @Service
 public class JobGroupServiceImpl implements JobGroupService {
 
-    @Value("${xxl.job.admin.addresses}")
+    @Value("${xxl.job.admin.addresses:}")
     private String adminAddresses;
 
-    @Value("${xxl.job.executor.appname}")
+    @Value("${xxl.job.executor.appname:}")
     private String appName;
 
-    @Value("${xxl.job.executor.title}")
+    @Value("${xxl.job.executor.title:}")
     private String title;
 
     /*
