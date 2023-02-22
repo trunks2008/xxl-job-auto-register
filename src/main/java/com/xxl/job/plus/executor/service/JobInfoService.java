@@ -10,4 +10,7 @@ public interface JobInfoService {
 
     Integer addJobInfo(XxlJobInfo xxlJobInfo);
 
+    void updateJobInfo(XxlJobInfo xxlJobInfo);
+
+    void saveJobCode(XxlJobInfo xxlJobInfo, String glueSource);
 }
